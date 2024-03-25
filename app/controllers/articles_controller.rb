@@ -8,6 +8,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
+    @rpc_response = ping_rpc_request
   end
 
   def show
@@ -52,6 +53,14 @@ class ArticlesController < ApplicationController
   end
 
   private
+    def ping_rpc_request
+      url = "http://secretnamebasis.site:10102/json_rpc"
+      method = 'DERO.Ping'
+      params = nil
+      dero_rpc_controller = DeroRpcController.new(url, method, params)
+      dero_rpc_controller.send_request['result']
+    end
+
     def article_params
       params.require(:article).permit(
         :title,
