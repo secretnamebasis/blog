@@ -1,24 +1,10 @@
 require 'net/http'
 class DeroRpcController < ApplicationController
-  attr_reader :url,
-    :payload,
-    :username,
-    :password
+  attr_reader :url, :payload, :username, :password
 
-  def initialize(
-    url,
-    method,
-    params = [],
-    username = nil,
-    password = nil
-  )
+  def initialize( url, method, params = [], username = nil, password = nil )
     @url = url
-    @payload = {
-      jsonrpc: '2.0',
-      id: 1,
-      method: method,
-      params: params
-    }
+    @payload = { jsonrpc: '2.0', id: 1, method: method, params: params }
     @username = username
     @password = password
   end
@@ -30,10 +16,7 @@ class DeroRpcController < ApplicationController
     request['Content-Type'] = 'application/json'
 
     if username && password
-      request.basic_auth(
-        username,
-        password
-      )
+      request.basic_auth( username, password )
     end
 
     request.body = payload.to_json
